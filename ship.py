@@ -5,7 +5,7 @@ class Ship(pygame.sprite.Sprite):
   def __init__(self, pos):
     super().__init__()
     self.image = pygame.image.load("RocketImage2.png")
-    self.image = pygame.transform.smoothscale(self.image, (50, 50))
+    self.image = pygame.transform.smoothscale(self.image, (30, 65))
     self.image = pygame.transform.rotate(self.image, -90)
     self.rect = self.image.get_rect()
     self.rect.center = pos
