@@ -3,6 +3,8 @@ import pandas
 import sys
 from pygame.locals import *
 from ship import Ship
+from asteroid import Asteroid
+import random
 
 pygame.init()
 screen_info = pygame.display.Info()
@@ -12,8 +14,20 @@ size = (width, height)
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
 player = Ship((width // 2, height // 2))
+asteroids = pygame.sprite.Group()
+asteroid_count = 10
+
+def init():
+  global asteroid_count
+  global asteroids
+  asteroids.empty()
+  for i in range (asteroid_count):
+    asteroids.add(Asteroid(
+      (random.randint(50, width - 50), random.randint(50, height - 50)),random.randint(15, 120)
+    ))
 
 def main():
+  init()
   while True:
     clock.tick(60)
     for event in pygame.event.get():
@@ -21,13 +35,13 @@ def main():
         sys.exit(0)
       if event.type == pygame.KEYDOWN:
         if event.key ==   pygame.K_LEFT:
-          player.speed[0] = -50
+          player.speed[0] = -2
         elif event.key ==   pygame.K_RIGHT:
-          player.speed[0] = +50
+          player.speed[0] = +2
         elif event.key ==   pygame.K_DOWN:
-          player.speed[1] = 50
+          player.speed[1] = 2
         elif event.key ==   pygame.K_UP:
-          player.speed[1] = -50  
+          player.speed[1] = -2  
       if event.type == pygame.KEYUP:
         if event.key ==   pygame.K_LEFT:
           player.speed[0] = 0  
@@ -37,8 +51,10 @@ def main():
           player.speed[1] = 0
         elif event.key ==   pygame.K_UP:
           player.speed[1] = 0      
-    player.update()
     screen.fill((0, 0, 0))
+    player.update()
+    asteroids.update()
+    asteroids.draw(screen)
     screen.blit(player.image, player.rect)
     pygame.display.update()
 
