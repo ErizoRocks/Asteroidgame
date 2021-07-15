@@ -1,7 +1,4 @@
 {
   "player": {"health": 100, "speed": 2},
-  "asteroid":{"damage": 20}
+  "asteroid": {"damage": 20}
 }
-// {
-//   "player": {"Level1":{"health": 40, "speed": 2},"Level2":{"health": 100, "speed": 5},"Level3":{"health": 200, "speed": 10}}, "asteroid":{"damage": 20}
-// }
