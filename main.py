@@ -15,7 +15,8 @@ screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
 player = Ship((width // 2, height // 2))
 asteroids = pygame.sprite.Group()
-asteroid_count = 10
+asteroid_count = 8
+
 
 def init():
   global asteroid_count
@@ -55,6 +56,16 @@ def main():
     player.update()
     asteroids.update()
     asteroids.draw(screen)
+    was_hit = pygame.sprite.spritecollide(player, asteroids, True)
+    if was_hit:
+      print("Oh no! The ship was hit!!!")
+      player.health -= 20
+      Heartsremaining = player.health // 20
+      print("One heart lost. You have", Heartsremaining, "/5 hearts remaining.")
+      if player.health == 0:
+       print("Game over. :(")
+       exit()
+      
     screen.blit(player.image, player.rect)
     pygame.display.update()
 
