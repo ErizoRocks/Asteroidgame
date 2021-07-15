@@ -5,6 +5,7 @@ from pygame.locals import *
 from ship import Ship
 from asteroid import Asteroid
 import random
+import json
 
 pygame.init()
 screen_info = pygame.display.Info()
@@ -16,6 +17,7 @@ clock = pygame.time.Clock()
 player = Ship((width // 2, height // 2))
 asteroids = pygame.sprite.Group()
 asteroid_count = 8
+Leveldata = json.load(open('game.json', 'rb'))
 
 
 def init():
