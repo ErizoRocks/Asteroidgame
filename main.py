@@ -15,13 +15,14 @@ height = screen_info.current_h
 size = (width, height)
 screen = pygame.display.set_mode(size, pygame.FULLSCREEN)
 clock = pygame.time.Clock()
-# player = Ship((width // 2, height // 2))
-# asteroids = pygame.sprite.Group()
-# asteroid_count = 8
+
 asteroids = None
 asteroid_count = None
 player = None
 
+timer = None
+score_font = pygame.font.SysFont("truetype", 30)
+test = score_font.render('Test', False, (255, 255, 255),(0, 0, 0))
 
 def init():
   global asteroid_count
@@ -40,19 +41,23 @@ def init():
 def main():
   init()
   while True:
+    Level = 1
+    S = int(json.load(open('game.json', 'rb'))['Speed'])
+    S *= int(Level)
+
     clock.tick(60)
     for event in pygame.event.get():
       if event.type == QUIT:
         sys.exit(0)
       if event.type == pygame.KEYDOWN:
         if event.key ==   pygame.K_LEFT:
-          player.speed[0] = -2
+          player.speed[0] = - int(S)
         elif event.key ==   pygame.K_RIGHT:
-          player.speed[0] = +2
+          player.speed[0] = +int(S)
         elif event.key ==   pygame.K_DOWN:
-          player.speed[1] = 2
+          player.speed[1] = + int(S)
         elif event.key ==   pygame.K_UP:
-          player.speed[1] = -2  
+          player.speed[1] = -int(S)  
       if event.type == pygame.KEYUP:
         if event.key ==   pygame.K_LEFT:
           player.speed[0] = 0  
@@ -79,12 +84,11 @@ def main():
         init()
       
     screen.blit(player.image, player.rect)
+    screen.blit(test, (30, 30))
     pygame.display.update()
 
 if __name__ == '__main__':
   main()
 
 
-#  {
-#  "player": {"Level1":{"health": 40, "speed": 2},"Level2":{"health": 100, "speed": 5},"Level3":{"health": 200, "speed": 10}}, "asteroid":{"damage": 20}
-#  }
+

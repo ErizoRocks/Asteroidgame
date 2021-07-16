@@ -1,4 +1,7 @@
 {
   "player": {"health": 100, "speed": 2},
-  "asteroid": {"damage": 20}
+  "asteroid": {"damage": 20}, "clock": {"StartTime": 60},
+  "speed": 3
 }
+
+
