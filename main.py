@@ -20,7 +20,7 @@ asteroid_count = None
 player = None
 timer = None
 game_font = pygame.font.SysFont("truetype", 50)
-level = 4
+level = 1
 player_speed = None
 level_image = None
 
