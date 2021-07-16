@@ -1,12 +1,12 @@
 import pygame
 import pandas
 import sys
-from pygame.locals import *
+from pygame.locals import QUIT
 from ship import Ship
 from asteroid import Asteroid
 import random
-import json
 import time
+from timercode import Timer
 
 pygame.init()
 screen_info = pygame.display.Info()
@@ -15,49 +15,53 @@ height = screen_info.current_h
 size = (width, height)
 screen = pygame.display.set_mode(size, pygame.FULLSCREEN)
 clock = pygame.time.Clock()
-
 asteroids = None
 asteroid_count = None
 player = None
-
 timer = None
-score_font = pygame.font.SysFont("truetype", 30)
-test = score_font.render('Test', False, (255, 255, 255),(0, 0, 0))
+game_font = pygame.font.SysFont("truetype", 50)
+level = 1
+player_speed = None
+level_image = None
+
 
 def init():
   global asteroid_count
   global asteroids
   global player
+  global timer
+  global player_speed
+  global level_image
+  level_image = game_font.render(str(level), False, (255, 255, 255), (0, 0, 0))
+  player_speed = level * 2
   player = Ship((width // 2, height // 2))
   asteroids = pygame.sprite.Group()
-  asteroid_count = 8
+  timer = Timer(20*level)
+  asteroid_count = level * 5
   asteroids.empty()
   for i in range (asteroid_count):
     ran_x = random.randint(50, width - 50)
     ran_y = random.randint(50, height - 50)
-    ran_size = random.randint(15, 120)
+    ran_size = random.randint(15, 60*level/2)
     asteroids.add(Asteroid((ran_x, ran_y), ran_size))
 
 def main():
   init()
+  global level
   while True:
-    Level = 1
-    S = int(json.load(open('game.json', 'rb'))['Speed'])
-    S *= int(Level)
-
     clock.tick(60)
     for event in pygame.event.get():
       if event.type == QUIT:
         sys.exit(0)
       if event.type == pygame.KEYDOWN:
         if event.key ==   pygame.K_LEFT:
-          player.speed[0] = - int(S)
+          player.speed[0] = -player_speed
         elif event.key ==   pygame.K_RIGHT:
-          player.speed[0] = +int(S)
+          player.speed[0] =  player_speed
         elif event.key ==   pygame.K_DOWN:
-          player.speed[1] = + int(S)
+          player.speed[1] =  player_speed
         elif event.key ==   pygame.K_UP:
-          player.speed[1] = -int(S)  
+          player.speed[1] = -player_speed
       if event.type == pygame.KEYUP:
         if event.key ==   pygame.K_LEFT:
           player.speed[0] = 0  
@@ -72,6 +76,10 @@ def main():
     asteroids.update()
     asteroids.draw(screen)
     was_hit = pygame.sprite.spritecollide(player, asteroids, True)
+    if timer.is_finished():
+      print("YOU WON!!!!!!")
+      level += 1
+      init()
     if was_hit:
       print("Oh no! The ship was hit!!!")
       player.health -= 20
@@ -84,7 +92,8 @@ def main():
         init()
       
     screen.blit(player.image, player.rect)
-    screen.blit(test, (30, 30))
+    screen.blit(timer.get_image(game_font), (30, 30))
+    screen.blit(level_image, (width - 50, 50))
     pygame.display.update()
 
 if __name__ == '__main__':
