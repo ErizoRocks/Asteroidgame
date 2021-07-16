@@ -20,7 +20,7 @@ asteroid_count = None
 player = None
 timer = None
 game_font = pygame.font.SysFont("truetype", 50)
-level = 1
+level = 4
 player_speed = None
 level_image = None
 
@@ -32,7 +32,7 @@ def init():
   global timer
   global player_speed
   global level_image
-  level_image = game_font.render(str(level), False, (255, 255, 255), (0, 0, 0))
+  level_image = game_font.render(str(level), False, (244,123,116), (0, 0, 0))
   player_speed = level * 2
   player = Ship((width // 2, height // 2))
   asteroids = pygame.sprite.Group()
@@ -42,7 +42,7 @@ def init():
   for i in range (asteroid_count):
     ran_x = random.randint(50, width - 50)
     ran_y = random.randint(50, height - 50)
-    ran_size = random.randint(15, 60*level/2)
+    ran_size = random.randint(15, 60*level - level*10)
     asteroids.add(Asteroid((ran_x, ran_y), ran_size))
 
 def main():
@@ -76,8 +76,14 @@ def main():
     asteroids.update()
     asteroids.draw(screen)
     was_hit = pygame.sprite.spritecollide(player, asteroids, True)
+    if level == 5:
+      Finalmessage = "You win! Game over!!!!!"
+      Finalmessage_image = game_font.render(Finalmessage, False, (244,123,116), (0, 0, 0))  
+      screen.blit(Finalmessage_image, (width //2, height //2))
+      time.sleep(5)
+      quit()
     if timer.is_finished():
-      print("YOU WON!!!!!!")
+      print("Level passed!")
       level += 1
       init()
     if was_hit:
@@ -88,12 +94,13 @@ def main():
       if player.health == 0:
         print("Game over. :(")
         print("Restarting...")
+        level = 1
         time.sleep(3)
         init()
       
     screen.blit(player.image, player.rect)
     screen.blit(timer.get_image(game_font), (30, 30))
-    screen.blit(level_image, (width - 50, 50))
+    screen.blit(level_image, (width - 30, 30))
     pygame.display.update()
 
 if __name__ == '__main__':

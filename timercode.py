@@ -19,4 +19,4 @@ class Timer:
     return str(self.initial - (now - self.start))
   
   def get_image(self, font):
-    return font.render(self.get_text(), False, (255, 255, 255), (0, 0, 0))
+    return font.render(self.get_text(), False, (244,123,116), (0, 0, 0))
